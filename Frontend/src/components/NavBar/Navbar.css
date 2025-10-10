@@ -1,0 +1,237 @@
+.navbar .logo{
+    height: 120px;
+    width: 150px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+.navbar{
+   padding: 20px 0px;
+   display: flex;
+   justify-content: space-between;
+    align-items: center;
+}
+.navbar-menu{
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    color:black;
+    font-size: 18px;
+    
+}
+.navbar-right{
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+.navbar button{
+    background: transparent;
+    font-size: 16px;
+    color: #49557e;
+    border: 1px solid tomato;
+    padding: 10px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.navbar button:hover{
+    background-color: #fff4f2
+}
+.navbar .active{
+    border-bottom: 2px solid #49557e; ;
+    padding-bottom: 2px;
+}
+.navbar li{
+    cursor: pointer;
+}
+.navbar-search-icon{
+    position: relative;
+}
+.navbar-search-icon .dot{
+    position: absolute;
+    height: 8px;
+    width: 8px;
+    background-color: tomato;
+    border-radius: 50%;
+    top: -4px;
+    right: -4px;
+}
+.navbar-profile{
+    position: relative;
+     transition: transform 0.2s ease-in-out;
+
+}
+.navbar-profile:hover img {
+    transform: scale(1.1); 
+}
+.nav-profile-dropdown{
+   position: absolute;
+   display: flex; 
+    top: 50%; 
+   right: 100%; 
+   margin-right: 15px; 
+   transform: translateY(-50%); 
+   visibility: hidden; 
+   opacity: 0; 
+   transition: opacity 0.3s ease, visibility 0.3s ease; 
+   z-index: 1; 
+   flex-direction: column;
+   gap: 10px;
+   background-color: #ffffff; 
+   padding: 18px 25px;
+   border-radius: 8px; 
+   border: 1px solid #e0e0e0;
+   list-style: none;
+   box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+
+}
+.navbar-profile:hover .nav-profile-dropdown{
+    visibility: visible; 
+    opacity: 1;
+}
+
+.nav-profile-dropdown li{
+     display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 12px; 
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+
+     
+}
+.nav-profile-dropdown img{
+    width: 20px;
+}
+.nav-profile-dropdown li:hover{
+     color: tomato;
+    background-color: #fff4f2;
+}
+
+.navbar-search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    cursor: pointer;
+    width: 24px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.search-icon:hover {
+    transform: scale(1.15);
+}
+
+.search-input {
+    width: 0;
+    padding: 8px 0;
+    border: none;
+    outline: none;
+    transition: width 0.4s ease-in-out;
+    visibility: hidden;
+    border-bottom: 2px solid tomato;
+    font-size: 16px;
+    background-color: transparent;
+}
+
+.search-input.active {
+    width: 220px;
+    visibility: visible;
+    padding: 8px 10px;
+    margin-left: 10px;
+}
+
+.search-suggestions-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 280px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    z-index: 10;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+    background-color: #fff4f2;
+}
+
+.suggestion-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.suggestion-name {
+    font-size: 16px;
+    color: #49557e;
+}
+
+
+@media (max-width:1050px){
+    .navbar .logo{
+        width: 140px;
+    }
+    .navbar-menu{
+        gap: 20px;
+        font-size: 17px;
+    }
+    .navbar-right{
+        gap: 30px;
+    }
+    .navbar-right img{
+        width: 22px;
+    }
+    .navbar-right button{
+        padding: 8px 25px;
+    }
+}
+@media (max-width:900px){
+    .navbar .logo{
+        width: 120px;
+    }
+    .navbar-menu{
+        gap: 15px;
+        font-size: 16px;
+    }
+    .navbar-right{
+        gap: 20px;
+    }
+    .navbar-right img{
+        width: 20px;
+    }
+    .navbar-right button{
+        padding: 7px 20px;
+        font-size: 15px;
+    }
+    .search-input.active {
+        width: 150px;
+    }
+}
+@media (max-width:750px){
+   
+    .navbar-menu{
+        display: none;
+        }
+    .search-input.active {
+        width: 120px;
+    }
+}
+
+
