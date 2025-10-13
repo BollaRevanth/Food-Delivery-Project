@@ -1,3 +1,4 @@
+@import "tailwindcss"; /* in this css file you can use tailwindcss classes and centralize all your design */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 *{
   padding: 0;

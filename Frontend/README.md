@@ -10,3 +10,17 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+
+--BRIAN ADVICES
+You can also add more ESLint plugins and rules to suit your project's needs. For example, you might want to add rules for accessibility, code style, or specific React patterns.
+
+--I installed tailwindscss and added the following to the ESLint config:
+
+```json
+{
+  "extends": [
+    "plugin:tailwindcss/recommended"
+  ],
+  "plugins": ["tailwindcss"]
+}
