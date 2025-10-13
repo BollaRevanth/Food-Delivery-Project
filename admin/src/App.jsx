@@ -9,7 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import Login from './pages/Login/Login'; 
 
 const App = () => {
-    const url = "http://localhost:3000";
+    const url = "https://food-delivery-backend-rnwl.onrender.com";
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
