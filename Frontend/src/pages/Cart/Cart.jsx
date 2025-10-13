@@ -8,7 +8,7 @@ const Cart = () => {
   const navigate = useNavigate();
 
   const subtotal = getTotalCartAmount();
-  const deliveryFee = subtotal > 0 ? 2 : 0;
+  const deliveryFee = subtotal > 0 ? 4 : 0;
   const discountAmount = subtotal * discount;
   const total = subtotal - discountAmount + deliveryFee;
 
