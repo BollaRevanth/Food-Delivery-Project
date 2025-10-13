@@ -12,22 +12,31 @@ const StoreContextProvider = (props) => {
     const [promoCode, setPromoCode] = useState("");
     const [discount, setDiscount] = useState(0);
     const [promoMessage, setPromoMessage] = useState("");
+    const [showLogin, setShowLogin] = useState(false);
 
     const addToCart = async (itemId) => {
-        if (!cartItems[itemId]) {
-            setCartItems(prev => ({ ...prev, [itemId]: 1 }));
-        } else {
-            setCartItems(prev => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-        }
+        const newCartItems = { ...cartItems };
+        newCartItems[itemId] = (newCartItems[itemId] || 0) + 1;
+        setCartItems(newCartItems);
+
         if (token) {
-            await axios.post(url + "/api/cart/add", { itemId }, { headers: { token } });
+            await axios.post(`${url}/api/cart/add`, { itemId }, { headers: { token } });
+        } else {
+            localStorage.setItem('guestCart', JSON.stringify(newCartItems));
         }
     };
 
     const removeFromCart = async (itemId) => {
-        setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+        const newCartItems = { ...cartItems };
+        if (newCartItems[itemId] > 0) {
+            newCartItems[itemId] -= 1;
+        }
+        setCartItems(newCartItems);
+
         if (token) {
-            await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
+            await axios.post(`${url}/api/cart/remove`, { itemId }, { headers: { token } });
+        } else {
+            localStorage.setItem('guestCart', JSON.stringify(newCartItems));
         }
     };
 
@@ -45,25 +54,56 @@ const StoreContextProvider = (props) => {
     };
 
     const fetchFoodList = async () => {
-        const response = await axios.get(url + "/api/food/list");
+        const response = await axios.get(`${url}/api/food/list`);
         setFoodList(response.data.data);
     };
 
     const loadCartData = async (token) => {
-        const response = await axios.post(url + "/api/cart/get", {}, { headers: { token } });
+        const response = await axios.post(`${url}/api/cart/get`, {}, { headers: { token } });
         setCartItems(response.data.cartData);
     };
+    
+    const mergeGuestCart = async (userToken) => {
+        const guestCart = JSON.parse(localStorage.getItem('guestCart') || '{}');
+        if (Object.keys(guestCart).length > 0) {
+            for (const itemId in guestCart) {
+                const quantity = guestCart[itemId];
+                if (quantity > 0) {
+                    for (let i = 0; i < quantity; i++) {
+                        await axios.post(`${url}/api/cart/add`, { itemId }, { headers: { token: userToken } });
+                    }
+                }
+            }
+            localStorage.removeItem('guestCart');
+        }
+    };
+
+    useEffect(() => {
+        async function loadData() {
+            await fetchFoodList();
+            const storedToken = localStorage.getItem("token");
+            if (storedToken) {
+                setToken(storedToken);
+                await loadCartData(storedToken);
+            } else {
+                const guestCart = localStorage.getItem('guestCart');
+                if (guestCart) {
+                    setCartItems(JSON.parse(guestCart));
+                }
+            }
+        }
+        loadData();
+    }, []);
 
     const clearCart = () => {
         setCartItems({});
-    }
+    };
 
-   
     const applyPromoCode = (code) => {
         const validCodes = {
-            "DISCOUNT10": 0.10, 
-            "SAVE20": 0.20,    
-            "FOODIE": 0.15      
+            "DISCOUNT10": 0.10,
+            "SAVE20": 0.20,
+            "FOODIE": 0.15
         };
 
         if (validCodes[code]) {
@@ -74,17 +114,6 @@ const StoreContextProvider = (props) => {
             setPromoMessage("Invalid promo code. Please try again.");
         }
     };
-
-    useEffect(() => {
-        async function loadData() {
-            await fetchFoodList();
-            if (localStorage.getItem("token")) {
-                setToken(localStorage.getItem("token"));
-                await loadCartData(localStorage.getItem("token"));
-            }
-        }
-        loadData();
-    }, []);
 
     const contextValue = {
         food_list,
@@ -104,7 +133,11 @@ const StoreContextProvider = (props) => {
         discount,
         applyPromoCode,
         promoMessage,
-        setPromoMessage
+        setPromoMessage,
+        showLogin,
+        setShowLogin,
+        mergeGuestCart,
+        loadCartData
     };
 
     return (
@@ -115,4 +148,3 @@ const StoreContextProvider = (props) => {
 };
 
 export default StoreContextProvider;
-

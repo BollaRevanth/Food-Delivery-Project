@@ -4,7 +4,7 @@ import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url, promoCode, setPromoCode, discount, applyPromoCode, promoMessage, setPromoMessage } = useContext(StoreContext);
+  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url, promoCode, setPromoCode, discount, applyPromoCode, promoMessage, setPromoMessage, token, setShowLogin } = useContext(StoreContext);
   const navigate = useNavigate();
 
   const subtotal = getTotalCartAmount();
@@ -18,6 +18,14 @@ const Cart = () => {
         return;
     }
     applyPromoCode(promoCode);
+  }
+
+  const handleCheckout = () => {
+    if (!token) {
+        setShowLogin(true);
+    } else {
+        navigate('/order');
+    }
   }
 
   return (
@@ -80,7 +88,7 @@ const Cart = () => {
               <b>${total.toFixed(2)}</b>
             </div>
           </div>
-          <button onClick={() => navigate('/order')}>PROCEED TO CHECKOUT</button>
+          <button onClick={handleCheckout}>PROCEED TO CHECKOUT</button>
         </div>
         <div className="cart-promocode">
           <div>
@@ -98,4 +106,3 @@ const Cart = () => {
 }
 
 export default Cart;
-
