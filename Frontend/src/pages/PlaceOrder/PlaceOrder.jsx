@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const PlaceOrder = () => {
-    const { getTotalCartAmount, token, food_list, cartItems, url, clearCart } = useContext(StoreContext);
+    const { getTotalCartAmount, token, food_list, cartItems, url, clearCart, discount } = useContext(StoreContext);
     const navigate = useNavigate();
 
     const [data, setData] = useState({
@@ -26,6 +26,11 @@ const PlaceOrder = () => {
         setData(data => ({ ...data, [name]: value }));
     };
 
+    const subtotal = getTotalCartAmount();
+    const discountAmount = subtotal * discount;
+    const deliveryFee = subtotal > 0 ? 4 : 0;
+    const total = subtotal - discountAmount + deliveryFee;
+
     const placeOrder = async (event) => {
         event.preventDefault();
         let orderItems = [];
@@ -38,7 +43,7 @@ const PlaceOrder = () => {
         let orderData = {
             address: data,
             items: orderItems,
-            amount: getTotalCartAmount() + 4,
+            amount: total,
         };
         try {
             let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
@@ -53,8 +58,6 @@ const PlaceOrder = () => {
             console.error(error);
         }
     };
-
-    
 
     useEffect(()=>{
       if (!token) {
@@ -91,17 +94,26 @@ const PlaceOrder = () => {
                     <div>
                         <div className="cart-total-details">
                             <p>Subtotal</p>
-                            <p>${getTotalCartAmount()}</p>
+                            <p>${subtotal.toFixed(2)}</p>
                         </div>
                         <hr />
+                        {discount > 0 && (
+                            <>
+                                <div className="cart-total-details discount">
+                                    <p>Discount</p>
+                                    <p>- ${discountAmount.toFixed(2)}</p>
+                                </div>
+                                <hr />
+                            </>
+                        )}
                         <div className="cart-total-details">
                             <p>Delivery Fee</p>
-                            <p>${getTotalCartAmount() === 0 ? 0 : 4}</p>
+                            <p>${deliveryFee.toFixed(2)}</p>
                         </div>
                         <hr />
                         <div className="cart-total-details">
                             <b>Total</b>
-                            <b>${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 4}</b>
+                            <b>${total.toFixed(2)}</b>
                         </div>
                     </div>
                      <div className="payment-option">
@@ -116,4 +128,3 @@ const PlaceOrder = () => {
 };
 
 export default PlaceOrder;
-
