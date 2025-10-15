@@ -1,6 +1,7 @@
 .list-table-format{
     display: grid;
-    grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr;
+    /* Gave the last column more space for two buttons */
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
     align-items: center;
     padding: 12px 15px;
     gap: 10px;
@@ -13,24 +14,50 @@
 .list-table-format img{
     width: 50px;
 }
-.cursor {
-  background-color: #ff755e; 
+
+/* New container for the buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start; /* Aligns buttons to the left */
+}
+
+/* Remove default link styles */
+.action-buttons a {
+    text-decoration: none;
+}
+
+/* Shared styles for both buttons */
+.action-buttons button {
   color: white;              
   border: none;              
-  padding: 6px 10px;         
+  padding: 8px 12px;         
   border-radius: 5px;       
   cursor: pointer;           
   font-weight: 500;          
-  transition: all 0.2s ease-in-out; 
+  transition: all 0.2s ease-in-out;
+  font-size: 13px;
 }
 
-.cursor:hover {
-  background-color: #ff6347; 
+.action-buttons button:hover {
   transform: scale(1.05);    
 }
 
+/* Style for the original Remove button */
+.cursor {
+  background-color: #ff6347; /* Tomato Red */
+}
+.cursor:hover {
+  background-color: #e5533d;
+}
 
-
+/* Style for our beautiful new Edit button */
+.btn-edit {
+  background-color: #4a90e2; /* Attractive Blue */
+}
+.btn-edit:hover {
+  background-color: #357abd;
+}
 
 @media (max-width:600px) {
     .list-table-format{
@@ -40,5 +67,7 @@
     .list-table-format .title{
         display: none;
     }
-    
+    .action-buttons {
+        flex-direction: column; /* Stack buttons on small screens */
+    }
 }

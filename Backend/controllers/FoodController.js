@@ -2,7 +2,6 @@ import foodModel from "../models/FoodModel.js";
 import fs from "fs";
 
 
-//add food item
 
 const addFood = async(req,res)=> {
 
@@ -21,12 +20,12 @@ const addFood = async(req,res)=> {
         res.json({success:true,message:"Food Added"})
     } catch (error) {
         console.log(error)
-        req.json({success:false,message:"Error"})
+        res.json({success:false,message:"Error"})
     }
 
 }
 
-//all food list
+
 const listFood = async(req,res) =>{
     try {
         const foods = await foodModel.find({});
@@ -37,7 +36,7 @@ const listFood = async(req,res) =>{
     }
 }
 
-//remove food item
+
 const removeFood = async(req,res) =>{
     try {
         const food = await foodModel.findById(req.body.id);
@@ -54,4 +53,63 @@ const removeFood = async(req,res) =>{
 }
 
 
-export {addFood,listFood,removeFood};
+const getFoodById = async (req, res) => {
+    try {
+        const food = await foodModel.findById(req.params.id);
+        if (food) {
+            res.json({ success: true, data: food });
+        } else {
+            res.json({ success: false, message: "Food item not found" });
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error fetching food item" });
+    }
+};
+
+
+
+const updateFood = async (req, res) => {
+    try {
+        
+        const existingFood = await foodModel.findById(req.body.id);
+        if (!existingFood) {
+            return res.json({ success: false, message: "Food item not found" });
+        }
+
+        let image_filename = existingFood.image;
+
+       
+        if (req.file) {
+            image_filename = req.file.filename;
+            
+            fs.unlink(`uploads/${existingFood.image}`, (err) => {
+                if (err) {
+                    
+                    console.log("Error deleting old image:", err);
+                }
+            });
+        }
+
+        
+        const updatedFoodData = {
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+            category: req.body.category,
+            image: image_filename
+        };
+
+        
+        await foodModel.findByIdAndUpdate(req.body.id, updatedFoodData);
+        
+        res.json({ success: true, message: "Food Item Updated Successfully" });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error updating food item" });
+    }
+};
+
+
+export {addFood, listFood, removeFood, getFoodById, updateFood}; 
