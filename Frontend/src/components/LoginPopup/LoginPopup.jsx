@@ -3,10 +3,68 @@ import './LoginPopup.css';
 import { assets } from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
+import { GoogleLogin } from '@react-oauth/google';
+import { toast } from 'react-toastify';
 
 const LoginPopup = ({ setShowLogin }) => {
-    const { url, setToken, mergeGuestCart, loadCartData } = useContext(StoreContext);
-    const [currState, setCurrState] = useState("Login");
+    const { url, setToken, mergeGuestCart, loadCartData, loginPopupState: currState, setLoginPopupState: setCurrState, socialData, setSocialData } = useContext(StoreContext);
+
+    const handleGoogleSuccess = async (credentialResponse) => {
+        try {
+            const response = await axios.post(url + "/api/user/google-login", {
+                credential: credentialResponse.credential
+            });
+            if (response.data.success) {
+                const userToken = response.data.token;
+                localStorage.setItem("token", userToken);
+                setToken(userToken);
+                
+                await mergeGuestCart(userToken);
+                await loadCartData(userToken);
+                
+                setShowLogin(false);
+            } else if (response.data.code === "USER_NOT_FOUND") {
+                if (currState === "Login") {
+                    toast.error("Account does not exist. Please sign up using the Sign Up page.");
+                } else {
+                    setSocialData({
+                        email: response.data.email,
+                        name: response.data.name || "",
+                        googleId: response.data.googleId
+                    });
+                    setData(d => ({
+                        ...d,
+                        email: response.data.email,
+                        name: response.data.name || ""
+                    }));
+                    setCurrState("Complete Registration");
+                }
+            } else {
+                toast.error(response.data.message);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Google login failed");
+        }
+    };
+
+    const handleGoogleError = () => {
+        toast.error("Google Sign-In was unsuccessful. Try again later.");
+    };
+
+    const handleGitHubLogin = () => {
+        localStorage.setItem("oauth_state", currState);
+        const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID || 'your_github_client_id_placeholder';
+        const redirectUri = window.location.origin;
+        window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user:email`;
+    };
+
+    const handleClose = () => {
+        setShowLogin(false);
+        setCurrState("Login");
+        setSocialData(null);
+    };
+
     const [data, setData] = useState({
         name: "",
         email: "",
@@ -29,7 +87,12 @@ const LoginPopup = ({ setShowLogin }) => {
         }
 
         try {
-            const response = await axios.post(newUrl, data);
+            const payload = {
+                ...data,
+                googleId: socialData?.googleId || undefined,
+                githubId: socialData?.githubId || undefined
+            };
+            const response = await axios.post(newUrl, payload);
             if (response.data.success) {
                 const userToken = response.data.token;
                 localStorage.setItem("token", userToken);
@@ -38,13 +101,14 @@ const LoginPopup = ({ setShowLogin }) => {
                 await mergeGuestCart(userToken);
                 await loadCartData(userToken);
                 
-                setShowLogin(false);
+                handleClose();
+                toast.success(currState === "Login" ? "Logged in successfully!" : "Account created successfully!");
             } else {
-                alert(response.data.message);
+                toast.error(response.data.message);
             }
         } catch (error) {
             console.error(error);
-            alert("An error occurred during authentication.");
+            toast.error("An error occurred during authentication.");
         }
     };
 
@@ -53,22 +117,62 @@ const LoginPopup = ({ setShowLogin }) => {
             <form onSubmit={onLogin} className="login-popup-container">
                 <div className="login-popup-title">
                     <h2>{currState}</h2>
-                    <img onClick={() => setShowLogin(false)} src={assets.cross_icon} alt="close" />
+                    <img onClick={handleClose} src={assets.cross_icon} alt="close" />
                 </div>
                 <div className="login-popup-inputs">
-                    {currState === "Sign Up" && <input name='name' onChange={onChangeHandler} value={data.name} type="text" placeholder='Your name' required />}
-                    <input name='email' onChange={onChangeHandler} value={data.email} type="email" placeholder='Your email' required />
-                    <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Password' required />
+                    {currState === "Complete Registration" ? (
+                        <>
+                            <input name='name' onChange={onChangeHandler} value={data.name} type="text" placeholder='Username' required />
+                            <input name='email' value={data.email} type="text" placeholder='Your email' disabled />
+                            <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Create password (min 8 characters)' required />
+                        </>
+                    ) : (
+                        <>
+                            {currState === "Sign Up" && <input name='name' onChange={onChangeHandler} value={data.name} type="text" placeholder='Username' required />}
+                            <input name='email' onChange={onChangeHandler} value={data.email} type={currState === "Login" ? "text" : "email"} placeholder={currState === "Login" ? "Email or Username" : "Your email"} required />
+                            <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Password' required />
+                        </>
+                    )}
                 </div>
-                <button type='submit'>{currState === "Sign Up" ? "Create account" : "Login"}</button>
+                <button type='submit'>
+                    {currState === "Complete Registration" ? "Create account" : (currState === "Sign Up" ? "Create account" : "Login")}
+                </button>
+                
+                {currState !== "Complete Registration" && (
+                    <>
+                        <div className="login-popup-divider">
+                            <span>or</span>
+                        </div>
+
+                        <div className="social-login-container">
+                            <div className="google-btn-wrapper">
+                                <GoogleLogin 
+                                    onSuccess={handleGoogleSuccess}
+                                    onError={handleGoogleError}
+                                    text={currState === "Sign Up" ? "signup_with" : "signin_with"}
+                                    shape="rectangular"
+                                    width="100%"
+                                />
+                            </div>
+                            <button type="button" onClick={handleGitHubLogin} className="github-login-btn">
+                                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" className="github-icon" />
+                                <span>{currState === "Sign Up" ? "Sign up with GitHub" : "Sign in with GitHub"}</span>
+                            </button>
+                        </div>
+                    </>
+                )}
+
                 <div className="login-popup-condition">
                     <input type="checkbox" required />
                     <p>By continuing, I agree to the terms of use & privacy policy</p>
                 </div>
-                {currState === "Login"
-                    ? <p>Create a new account? <span onClick={() => setCurrState("Sign Up")}>Click here</span></p>
-                    : <p>Already have an account? <span onClick={() => setCurrState("Login")}>Login here</span></p>
-                }
+                {currState === "Complete Registration" ? (
+                    <p>Registering with social account. <span onClick={handleClose}>Cancel</span></p>
+                ) : (
+                    currState === "Login"
+                        ? <p>Create a new account? <span onClick={() => setCurrState("Sign Up")}>Click here</span></p>
+                        : <p>Already have an account? <span onClick={() => setCurrState("Login")}>Login here</span></p>
+                )}
             </form>
         </div>
     );

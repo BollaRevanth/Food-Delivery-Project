@@ -67,6 +67,7 @@
     justify-content: space-between;
     color: #555;
 }
+
 .cart-total-details.discount {
     color: green;
 }
@@ -86,6 +87,7 @@
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
 .cart-total button:hover {
     background-color: #e54f3a;
 }
@@ -125,6 +127,7 @@
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
 .cart-promocode-input button:hover {
     background-color: #e54f3a;
 }
@@ -134,9 +137,11 @@
     font-size: 0.9rem;
     font-weight: 500;
 }
+
 .promo-message.success {
     color: green;
 }
+
 .promo-message.error {
     color: tomato;
 }
@@ -145,8 +150,8 @@
     .cart-bottom {
         flex-direction: column-reverse;
     }
+
     .cart-promocode {
         justify-content: start;
     }
 }
-

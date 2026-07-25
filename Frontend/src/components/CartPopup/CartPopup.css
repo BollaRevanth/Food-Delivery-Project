@@ -1,0 +1,123 @@
+.cart-popup-wrapper {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translate(-50%, 150%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+    width: min(90vw, 420px);
+}
+
+.cart-popup-wrapper.show {
+    transform: translate(-50%, 0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.cart-popup-container {
+    background-color: rgba(36, 36, 40, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.cart-popup-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cart-popup-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cart-popup-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cart-popup-added {
+    color: tomato;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.cart-popup-name {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+}
+
+.cart-popup-price {
+    color: #b3b3b3;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.cart-popup-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cart-popup-btn {
+    border: none;
+    outline: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: white;
+    background-color: tomato;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.cart-popup-btn:hover {
+    background-color: #e2452c;
+    transform: scale(1.05);
+}
+
+.cart-popup-close {
+    background: none;
+    border: none;
+    outline: none;
+    color: #a0a0a0;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: color 0.2s;
+}
+
+.cart-popup-close:hover {
+    color: #ffffff;
+}
+
+@media (max-width: 480px) {
+    .cart-popup-wrapper {
+        bottom: 20px;
+    }
+    .cart-popup-name {
+        max-width: 110px;
+    }
+}

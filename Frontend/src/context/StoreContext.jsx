@@ -5,7 +5,9 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
-    const url = "https://food-delivery-backend-rnwl.onrender.com";
+    const url = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? "http://localhost:3000"
+        : "https://food-delivery-backend-rnwl.onrender.com";
     const [token, setToken] = useState("");
     const [food_list, setFoodList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -13,11 +15,22 @@ const StoreContextProvider = (props) => {
     const [discount, setDiscount] = useState(0);
     const [promoMessage, setPromoMessage] = useState("");
     const [showLogin, setShowLogin] = useState(false);
+    const [loginPopupState, setLoginPopupState] = useState("Login");
+    const [socialData, setSocialData] = useState(null);
+    const [lastAddedItem, setLastAddedItem] = useState(null);
+    const [showCartPopup, setShowCartPopup] = useState(false);
 
     const addToCart = async (itemId) => {
         const newCartItems = { ...cartItems };
         newCartItems[itemId] = (newCartItems[itemId] || 0) + 1;
         setCartItems(newCartItems);
+
+        // Find the item details for the popup
+        const itemInfo = food_list.find((item) => item._id === itemId);
+        if (itemInfo) {
+            setLastAddedItem(itemInfo);
+            setShowCartPopup(true);
+        }
 
         if (token) {
             await axios.post(`${url}/api/cart/add`, { itemId }, { headers: { token } });
@@ -136,6 +149,14 @@ const StoreContextProvider = (props) => {
         setPromoMessage,
         showLogin,
         setShowLogin,
+        loginPopupState,
+        setLoginPopupState,
+        socialData,
+        setSocialData,
+        lastAddedItem,
+        setLastAddedItem,
+        showCartPopup,
+        setShowCartPopup,
         mergeGuestCart,
         loadCartData
     };

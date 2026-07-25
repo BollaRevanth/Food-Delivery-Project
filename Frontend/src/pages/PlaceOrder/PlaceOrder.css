@@ -1,20 +1,23 @@
-.place-order{
+.place-order {
     display: flex;
     align-items: start;
     justify-content: space-between;
     gap: 50px;
     margin-top: 100px;
 }
-.place-order-left{
+
+.place-order-left {
     width: 100%;
-    max-width: max(30%,500px);
+    max-width: max(30%, 500px);
 }
-.place-order-left .title{
+
+.place-order-left .title {
     font-size: 30px;
     font-weight: 600;
     margin-bottom: 50px;
 }
-.place-order-left input{
+
+.place-order-left input {
     margin-bottom: 15px;
     width: 100%;
     padding: 10px;
@@ -22,24 +25,26 @@
     border-radius: 4px;
     outline-color: tomato;
 }
-.place-order-left .multi-fields{
+
+.place-order-left .multi-fields {
     display: flex;
     gap: 10px;
 }
-.place-order-right{
+
+.place-order-right {
     width: 100%;
-    max-width: max(40%,500px);
+    max-width: max(40%, 500px);
 }
 
 .place-order .payment-option {
     display: flex;
     align-items: center;
     gap: 15px;
-    background-color: #f1f8e9; 
-    border: 1px solid #8bc34a; 
+    background-color: #f1f8e9;
+    border: 1px solid #8bc34a;
     border-radius: 8px;
     padding: 15px;
-    margin-top: 30px; 
+    margin-top: 30px;
     cursor: pointer;
     transition: box-shadow 0.3s ease;
 }
@@ -61,7 +66,7 @@
     content: '';
     width: 10px;
     height: 10px;
-    background-color: tomato; 
+    background-color: tomato;
     border-radius: 50%;
     position: absolute;
     top: 50%;
@@ -77,6 +82,6 @@
 
 
 .place-order .cart-total button {
-    margin-top: 20px; 
-    width: 100%; 
+    margin-top: 20px;
+    width: 100%;
 }

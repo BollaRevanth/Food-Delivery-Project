@@ -1,28 +1,331 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-*{
+
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: outfit;
   scroll-behavior: smooth;
 }
-body{
+
+body {
   min-height: 100vh;
 }
-a{
+
+a {
   text-decoration: none;
   color: inherit;
 }
-.app{
+
+.app {
   width: 80%;
   margin: auto;
 }
 
 @keyframes fadeIn {
-  0%{
+  0% {
     opacity: 0;
   }
-  100%{
+
+  100% {
     opacity: 1;
   }
+}
+
+/* Custom Native Dark Theme variables */
+:root {
+  --bg-color: #f5f7fa;
+  --text-color: #262626;
+  --text-secondary: #49557e;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --input-border: #c9c9c9;
+  --border-color: #e2e2e2;
+  --hover-bg: #fff4f2;
+  --popup-bg: #ffffff;
+  --explore-menu-circle-bg: #e2e2ee;
+  --dropdown-bg: #ffffff;
+  --dropdown-hover: #fff4f2;
+}
+
+html[data-theme='dark'] {
+  --bg-color: #111215;
+  --text-color: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --card-bg: #1e1f24;
+  --input-bg: #18191d;
+  --input-border: #374151;
+  --border-color: #2e3039;
+  --hover-bg: #2a1b18;
+  --popup-bg: #1e1f24;
+  --explore-menu-circle-bg: #2b2c35;
+  --dropdown-bg: #1e1f24;
+  --dropdown-hover: #2e3039;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Custom Premium Dark Mode Styles */
+
+/* 1. Global typography overrides */
+html[data-theme='dark'] h1,
+html[data-theme='dark'] h2,
+html[data-theme='dark'] h3,
+html[data-theme='dark'] h4,
+html[data-theme='dark'] h5,
+html[data-theme='dark'] h6 {
+  color: var(--text-color);
+}
+
+/* 2. Navbar Component */
+html[data-theme='dark'] .navbar-menu {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .navbar-menu a,
+html[data-theme='dark'] .navbar-menu Link {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .navbar-menu .active {
+  border-bottom-color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .navbar button {
+  color: var(--text-color) !important;
+  border-color: tomato !important;
+}
+
+html[data-theme='dark'] .navbar button:hover {
+  background-color: var(--hover-bg) !important;
+}
+
+html[data-theme='dark'] .search-input {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--input-border) !important;
+}
+
+html[data-theme='dark'] .search-suggestions-dropdown {
+  background-color: var(--dropdown-bg) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-theme='dark'] .suggestion-item {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .suggestion-item:hover {
+  background-color: var(--dropdown-hover) !important;
+}
+
+html[data-theme='dark'] .nav-profile-dropdown {
+  background-color: var(--dropdown-bg) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-theme='dark'] .nav-profile-dropdown li {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .nav-profile-dropdown li:hover {
+  background-color: var(--dropdown-hover) !important;
+}
+
+html[data-theme='dark'] .nav-profile-dropdown hr {
+  background-color: var(--border-color) !important;
+  border: none !important;
+  height: 1px !important;
+}
+
+/* 3. ExploreMenu Component */
+html[data-theme='dark'] .explore-menu h1,
+html[data-theme='dark'] .explore-menu p,
+html[data-theme='dark'] .explore-menu-text {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .explore-menu-list-item p {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .explore-menu-list-item img {
+  background-color: var(--explore-menu-circle-bg) !important;
+}
+
+html[data-theme='dark'] .explore-menu hr {
+  background-color: var(--border-color) !important;
+  border: none !important;
+  height: 2px !important;
+}
+
+/* 4. FoodDisplay & FoodItem Components */
+html[data-theme='dark'] .food-display h2 {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .food-item {
+  background-color: var(--card-bg) !important;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4) !important;
+}
+
+html[data-theme='dark'] .food-item-info {
+  background-color: var(--card-bg) !important;
+}
+
+html[data-theme='dark'] .food-item-name-rating p {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .food-item-description {
+  color: var(--text-secondary) !important;
+}
+
+/* 5. AppDownload Component */
+html[data-theme='dark'] .app-download p {
+  color: var(--text-color) !important;
+}
+
+/* 6. Cart Component */
+html[data-theme='dark'] .cart-items-title {
+  color: var(--text-secondary) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+html[data-theme='dark'] .cart-items-item {
+  color: var(--text-color) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+html[data-theme='dark'] .cart hr {
+  background-color: var(--border-color) !important;
+  border: none !important;
+  height: 1px !important;
+}
+
+html[data-theme='dark'] .cart-bottom h2 {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .cart-total-details {
+  color: var(--text-secondary) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+html[data-theme='dark'] .cart-total-details p:last-child {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .cart-promocode p {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme='dark'] .cart-promocode-input {
+  background-color: var(--input-bg) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+html[data-theme='dark'] .cart-promocode-input input {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .promo-status-message {
+  color: var(--text-color) !important;
+}
+
+/* 7. PlaceOrder Component */
+html[data-theme='dark'] .place-order {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .place-order-left .title {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .place-order input {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme='dark'] .place-order input::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+/* 8. MyOrders Component */
+html[data-theme='dark'] .my-orders h2 {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .my-orders-order {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .my-orders-order p span {
+  color: var(--text-color) !important;
+}
+
+/* 9. Verify Component */
+html[data-theme='dark'] .verify {
+  background-color: var(--bg-color) !important;
+}
+
+/* 10. LoginPopup & LogoutPopup Components */
+html[data-theme='dark'] .login-popup-container,
+html[data-theme='dark'] .logout-popup-container {
+  background-color: var(--popup-bg) !important;
+  color: var(--text-color) !important;
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+html[data-theme='dark'] .login-popup-title h2,
+html[data-theme='dark'] .logout-popup-container h2 {
+  color: var(--text-color) !important;
+}
+
+html[data-theme='dark'] .login-popup-inputs input {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme='dark'] .login-popup-inputs input::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme='dark'] .login-popup-condition p,
+html[data-theme='dark'] .login-popup p {
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme='dark'] .social-divider span {
+  background-color: var(--popup-bg) !important;
+  color: var(--text-secondary) !important;
+}
+
+html[data-theme='dark'] .social-divider::before {
+  background-color: var(--border-color) !important;
+}
+
+html[data-theme='dark'] .login-popup-close-btn img {
+  filter: invert(1) brightness(2) !important;
+}
+
+html[data-theme='dark'] .login-popup-inputs input[disabled] {
+  background-color: var(--border-color) !important;
+  opacity: 0.7 !important;
+}
+
+/* 11. Footer Component */
+html[data-theme='dark'] .footer {
+  background-color: #0d0e11 !important;
 }

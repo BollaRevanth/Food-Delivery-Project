@@ -1,12 +1,12 @@
-
-.header{
+.header {
    height: 34vw;
-margin: 30px auto;
-background: url('/header_img.png')no-repeat ;
-background-size: contain;
-position: relative;
+   margin: 30px auto;
+   background: url('/header_img.png')no-repeat;
+   background-size: contain;
+   position: relative;
 }
-.header-contents{
+
+.header-contents {
    position: absolute;
    display: flex;
    flex-direction: column;
@@ -17,29 +17,33 @@ position: relative;
    left: 6vw;
    animation: fadeIn 3s;
 }
-.header-contents h2{
-  font-weight: 500;
-  color: white;
-  font-size: max(4.5vw,22px);
+
+.header-contents h2 {
+   font-weight: 500;
+   color: white;
+   font-size: max(4.5vw, 22px);
 
 }
-.header-contents p{
- font-size: 1vw;
- color: white;
+
+.header-contents p {
+   font-size: 1vw;
+   color: white;
 
 }
-.header-contents button{
+
+.header-contents button {
    border: none;
-   color: #747474; 
+   color: #747474;
    font-weight: 500;
    padding: 1vw 2.3vw;
    background-color: white;
-   font-size: max(1vq,13px);
+   font-size: max(1vq, 13px);
    border-radius: 50px;
    cursor: pointer;
    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-   transition: all 0.3s ease; 
+   transition: all 0.3s ease;
 }
+
 .header-contents button:hover {
    transform: scale(1.05);
    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
@@ -47,23 +51,26 @@ position: relative;
 
 
 
-@media(max-width:1050px){
-  
-   .header-contents{
+@media(max-width:1050px) {
+
+   .header-contents {
       max-width: 45%;
-      
+
    }
 }
-@media(max-width:750px){
-   
-   .header-contents{
+
+@media(max-width:750px) {
+
+   .header-contents {
       max-width: 65%;
-      
+
    }
-   .header-contents p{
-     display: none;
+
+   .header-contents p {
+      display: none;
    }
-   .header-contents button{
+
+   .header-contents button {
       padding: 2vw 4vw;
    }
 }
