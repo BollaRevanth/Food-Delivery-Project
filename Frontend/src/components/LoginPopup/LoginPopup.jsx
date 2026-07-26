@@ -46,14 +46,18 @@ const LoginPopup = ({ setShowLogin }) => {
                 credential: credentialResponse.credential
             });
             if (response.data.success) {
-                const userToken = response.data.token;
-                localStorage.setItem("token", userToken);
-                setToken(userToken);
-                
-                await mergeGuestCart(userToken);
-                await loadCartData(userToken);
-                
-                setShowLogin(false);
+                if (currState === "Sign Up") {
+                    toast.error("Account already exists with this email. Please log in instead or try a different email ID.");
+                } else {
+                    const userToken = response.data.token;
+                    localStorage.setItem("token", userToken);
+                    setToken(userToken);
+                    
+                    await mergeGuestCart(userToken);
+                    await loadCartData(userToken);
+                    
+                    setShowLogin(false);
+                }
             } else if (response.data.code === "USER_NOT_FOUND") {
                 if (currState === "Login") {
                     toast.error("Account does not exist. Please sign up using the Sign Up page.");
@@ -101,6 +105,16 @@ const LoginPopup = ({ setShowLogin }) => {
         email: "",
         password: ""
     });
+
+    useEffect(() => {
+        if (socialData) {
+            setData(d => ({
+                ...d,
+                email: socialData.email || "",
+                name: socialData.name || ""
+            }));
+        }
+    }, [socialData]);
 
     const onChangeHandler = (event) => {
         const name = event.target.name;
@@ -154,7 +168,15 @@ const LoginPopup = ({ setShowLogin }) => {
                     {currState === "Complete Registration" ? (
                         <>
                             <input name='name' onChange={onChangeHandler} value={data.name} type="text" placeholder='Username' required />
-                            <input name='email' value={data.email} type="text" placeholder='Your email' disabled />
+                            <input 
+                                name='email' 
+                                onChange={onChangeHandler} 
+                                value={data.email} 
+                                type="email" 
+                                placeholder='Your email' 
+                                disabled={!!socialData?.email} 
+                                required 
+                            />
                             <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Create password (min 8 characters)' required />
                         </>
                     ) : (

@@ -31,13 +31,19 @@ const App = () => {
 
           const response = await axios.post(url + "/api/user/github-login", { code });
           if (response.data.success) {
-            const userToken = response.data.token;
-            localStorage.setItem("token", userToken);
-            setToken(userToken);
-            
-            await mergeGuestCart(userToken);
-            await loadCartData(userToken);
-            toast.success("Logged in successfully with GitHub!");
+            if (oauthState === "Sign Up") {
+              toast.error("Account already exists with this email. Please log in instead or try a different email ID.");
+              setLoginPopupState("Login");
+              setShowLogin(true);
+            } else {
+              const userToken = response.data.token;
+              localStorage.setItem("token", userToken);
+              setToken(userToken);
+              
+              await mergeGuestCart(userToken);
+              await loadCartData(userToken);
+              toast.success("Logged in successfully with GitHub!");
+            }
           } else if (response.data.code === "USER_NOT_FOUND") {
             if (oauthState === "Login") {
               toast.error("Account does not exist. Please sign up using the Sign Up page.");

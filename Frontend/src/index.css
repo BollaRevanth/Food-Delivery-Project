@@ -321,8 +321,11 @@ html[data-theme='dark'] .login-popup-close-btn img {
 }
 
 html[data-theme='dark'] .login-popup-inputs input[disabled] {
-  background-color: var(--border-color) !important;
-  opacity: 0.7 !important;
+  background-color: #2b2c35 !important;
+  color: #9ca3af !important;
+  border-color: #3f404a !important;
+  opacity: 0.8 !important;
+  cursor: not-allowed;
 }
 
 /* 11. Footer Component */

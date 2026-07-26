@@ -85,6 +85,13 @@
     box-shadow: 0 0 0 3px rgba(255, 99, 71, 0.2);
 }
 
+.login-popup-inputs input[disabled] {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border-color: #e5e7eb;
+    cursor: not-allowed;
+}
+
 .login-popup-container button[type="submit"] {
     border: none;
     padding: 12px;
