@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import './LoginPopup.css';
 import { assets } from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
@@ -8,6 +8,37 @@ import { toast } from 'react-toastify';
 
 const LoginPopup = ({ setShowLogin }) => {
     const { url, setToken, mergeGuestCart, loadCartData, loginPopupState: currState, setLoginPopupState: setCurrState, socialData, setSocialData } = useContext(StoreContext);
+    const containerRef = useRef(null);
+    const [googleBtnWidth, setGoogleBtnWidth] = useState(340);
+
+    useEffect(() => {
+        if (!containerRef.current) return;
+        
+        const updateWidth = () => {
+            if (containerRef.current) {
+                const width = containerRef.current.getBoundingClientRect().width;
+                if (width > 0) {
+                    const clampedWidth = Math.max(200, Math.min(400, Math.floor(width)));
+                    setGoogleBtnWidth(clampedWidth);
+                }
+            }
+        };
+
+        updateWidth();
+
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                const width = entry.contentRect.width;
+                if (width > 0) {
+                    const clampedWidth = Math.max(200, Math.min(400, Math.floor(width)));
+                    setGoogleBtnWidth(clampedWidth);
+                }
+            }
+        });
+        
+        resizeObserver.observe(containerRef.current);
+        return () => resizeObserver.disconnect();
+    }, []);
 
     const handleGoogleSuccess = async (credentialResponse) => {
         try {
@@ -144,14 +175,14 @@ const LoginPopup = ({ setShowLogin }) => {
                             <span>or</span>
                         </div>
 
-                        <div className="social-login-container">
+                        <div ref={containerRef} className="social-login-container">
                             <div className="google-btn-wrapper">
                                 <GoogleLogin 
                                     onSuccess={handleGoogleSuccess}
                                     onError={handleGoogleError}
                                     text={currState === "Sign Up" ? "signup_with" : "signin_with"}
                                     shape="rectangular"
-                                    width="100%"
+                                    width={String(googleBtnWidth)}
                                 />
                             </div>
                             <button type="button" onClick={handleGitHubLogin} className="github-login-btn">

@@ -169,11 +169,6 @@
     justify-content: center;
 }
 
-.google-btn-wrapper > div,
-.google-btn-wrapper iframe {
-    width: 100% !important;
-}
-
 .github-login-btn {
     display: flex;
     align-items: center;
